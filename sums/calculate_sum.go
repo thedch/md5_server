@@ -1,4 +1,4 @@
-package calculate_sum
+package sums
 
 import (
       "crypto/md5"
