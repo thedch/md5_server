@@ -18,7 +18,7 @@ func check(e error) {
 }
 
 const (
-	host   = "localhost"
+	host   = "postgres"
 	port   = 5432
 	user   = "postgres"
 	dbname = "postgres"
@@ -26,7 +26,7 @@ const (
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	input := r.URL.Path[1:]
-	// Calculate the hash
+	// fmt.Printf("%s", r.Header)
 	hash := sums.GetMD5Hash(r.URL.Path[1:])
 	// Print it for the user
 	fmt.Fprintf(w, "Hello there! The md5 hash of %s is %x\n", input, hash)
@@ -42,12 +42,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	check(err)
 
 	// Add the user input to the database
-	sqlInsert := `
+	if input != "favicon.ico" {
+		sqlInsert := `
     INSERT INTO md5 (input, hash)
     VALUES ($1, 'test')`
 
-	_, err = db.Exec(sqlInsert, input) // Underscore?
-	check(err)
+		_, err = db.Exec(sqlInsert, input) // Underscore?
+		check(err)
+	}
 
 	// Query the database for infomation
 	sqlStatement := "SELECT input FROM md5;"
