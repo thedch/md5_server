@@ -44,8 +44,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Add the user input to the database
 	if input != "favicon.ico" {
 		sqlInsert := `
-    INSERT INTO md5 (input, hash)
-    VALUES ($1, 'test')`
+		INSERT INTO md5 (input, hash)
+		VALUES ($1, 'test')`
 
 		_, err = db.Exec(sqlInsert, input) // Underscore?
 		check(err)
